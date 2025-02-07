@@ -1,6 +1,5 @@
 {
   "name": "background-removal-app",
-  "homepage": "https://eklakbgremoval.github.io/BGRemoval/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
