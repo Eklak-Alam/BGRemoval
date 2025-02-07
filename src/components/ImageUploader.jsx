@@ -104,7 +104,7 @@ const ImageUploader = () => {
             style={{ maxWidth: '100%', height: 'auto' }}
           />
           <br />
-          <a href={processedImage} download="no-bg-image.png">
+          <a href={processedImage} download="eklak-bg.png">
             <Button>Download Image</Button>
           </a>
         </div>
