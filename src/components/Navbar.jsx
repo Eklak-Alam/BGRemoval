@@ -1,4 +1,3 @@
-// src/components/Navbar.jsx
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { ThemeContext } from '../context/ThemeContext';
@@ -9,11 +8,13 @@ import {
   FaGithub, 
   FaBars, 
   FaTimes,
-  FaEraser  // This icon represents background removal
+  FaEraser,  // Icon for BG Removal
+  FaSun, 
+  FaMoon  // Icons for light/dark mode
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
-// Main navbar container
+// Styled Navbar
 const Nav = styled.nav`
   display: flex;
   justify-content: space-between;
@@ -24,7 +25,7 @@ const Nav = styled.nav`
   position: relative;
 `;
 
-// Logo styling with icon
+// Logo Styling
 const Logo = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
@@ -33,7 +34,7 @@ const Logo = styled.div`
   gap: 0.5rem;
 `;
 
-// Group for icons (desktop view)
+// Desktop Icons
 const IconGroup = styled.div`
   display: flex;
   gap: 1rem;
@@ -44,21 +45,7 @@ const IconGroup = styled.div`
   }
 `;
 
-// A basic button (for theme toggling on desktop)
-const DesktopButton = styled.button`
-  margin-left: 1rem;
-  background: none;
-  border: none;
-  color: inherit;
-  font-size: 1rem;
-  cursor: pointer;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-// Hamburger icon appears only on mobile
+// Hamburger for Mobile Menu
 const Hamburger = styled.div`
   display: none;
   cursor: pointer;
@@ -69,7 +56,7 @@ const Hamburger = styled.div`
   }
 `;
 
-// Mobile menu container, animated with framer-motion
+// Mobile Menu Styling
 const MobileMenu = styled(motion.div)`
   position: absolute;
   top: 100%;
@@ -83,7 +70,7 @@ const MobileMenu = styled(motion.div)`
   z-index: 10;
 `;
 
-// Each item in the mobile menu
+// Mobile Menu Item
 const MobileMenuItem = styled.a`
   padding: 0.5rem 0;
   font-size: 1.2rem;
@@ -96,19 +83,41 @@ const MobileMenuItem = styled.a`
   }
 `;
 
-// A styled button version for mobile (used for toggling theme)
-const MobileButton = styled.button`
-  background: none;
-  border: none;
-  color: ${({ theme }) => theme.footerText};
-  font-size: 1.2rem;
-  margin-top: 0.5rem;
-  cursor: pointer;
+// Styled Switch Button
+const SwitchContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 `;
 
+// Switch Wrapper
+const Switch = styled.div`
+  width: 50px;
+  height: 24px;
+  background: ${({ theme }) => theme.footerText};
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: ${({ isDark }) => (isDark ? "flex-end" : "flex-start")};
+  padding: 3px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+`;
+
+const Toggle = styled.div`
+  width: 18px;
+  height: 18px;
+  background: ${({ theme }) => theme.footerBackground};
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+`;
+
+
 const Navbar = () => {
-  const { toggleTheme } = useContext(ThemeContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isDark = theme.mode === 'dark';
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(prev => !prev);
@@ -116,32 +125,38 @@ const Navbar = () => {
 
   return (
     <Nav>
-      {/* Logo with an icon */}
+      {/* Logo */}
       <Logo>
         <FaEraser /> 
         AI BG Removal
       </Logo>
 
-      {/* Desktop Icon Group */}
+      {/* Desktop Icons */}
       <IconGroup>
-        <a href="https://instagram.com" target="_blank" rel="noreferrer">
+        <a href="https://www.instagram.com/heartless_eklak/" target="_blank" rel="noreferrer">
           <FaInstagram />
         </a>
-        <a href="https://telegram.org" target="_blank" rel="noreferrer">
+        <a href="https://web.telegram.org/k/" target="_blank" rel="noreferrer">
           <FaTelegram />
         </a>
-        <a href="https://whatsapp.com" target="_blank" rel="noreferrer">
+        <a href="https://wa.link/z7wvrw" target="_blank" rel="noreferrer">
           <FaWhatsapp />
         </a>
-        <a href="https://github.com" target="_blank" rel="noreferrer">
+        <a href="https://github.com/Eklak-Alam" target="_blank" rel="noreferrer">
           <FaGithub />
         </a>
       </IconGroup>
 
-      {/* Desktop Theme Toggle Button */}
-      <DesktopButton onClick={toggleTheme}>Toggle Theme</DesktopButton>
+      {/* Switch Button for Theme Toggle */}
+      <SwitchContainer onClick={toggleTheme}>
+        {isDark ? <FaMoon /> : <FaSun />}
+        <Switch isDark={isDark}>
+          <Toggle />
+        </Switch>
+      </SwitchContainer>
 
-      {/* Hamburger icon for mobile */}
+
+      {/* Mobile Hamburger */}
       <Hamburger onClick={toggleMobileMenu}>
         {mobileMenuOpen ? <FaTimes /> : <FaBars />}
       </Hamburger>
@@ -165,10 +180,6 @@ const Navbar = () => {
           <MobileMenuItem href="https://github.com" target="_blank" rel="noreferrer">
             GitHub
           </MobileMenuItem>
-          {/* Mobile Theme Toggle Button */}
-          <MobileButton onClick={() => { toggleTheme(); toggleMobileMenu(); }}>
-            Toggle Theme
-          </MobileButton>
         </MobileMenu>
       )}
     </Nav>
